@@ -1,4 +1,26 @@
-#include <sort.h>
+#include "sort.h"
+#include <stdio.h>
+
+/**
+ * print_array - Prints an array of integers
+ *
+ * @array: The array to be printed
+ * @size: Number of elements in @array
+ */
+void print_array(const int *array, size_t size)
+{
+	size_t i;
+
+	i = 0;
+	while (array && i < size)
+	{
+		if (i > 0)
+			printf(", ");
+		printf("%d", array[i]);
+		++i;
+	}
+	printf("\n");
+}
 
 /**
  * bubble_sort - a function that sorts an array of integers in
@@ -21,29 +43,16 @@ void bubble_sort(int *array, size_t size)
 	m = 0;
 	while (m < size)
 	{
-		for (n = 0; n < size -1; n++)
+		for (n = 0; n < size - 1; n++)
 		{
 			if (array[n] > array[n + 1])
 			{
 				tmp = array[n];
 				array[n] = array[n + 1];
-				array[k + 1] = tmp;
+				array[n + 1] = tmp;
 				print_array(array, size);
 			}
 		}
 		m++;
 	}
-}
-
-int main(void)
-{
-    int array[] = {19, 48, 99, 71, 13, 52, 96, 73, 86, 7};
-    size_t n = sizeof(array) / sizeof(array[0]);
-
-    print_array(array, n);
-    printf("\n");
-    bubble_sort(array, n);
-    printf("\n");
-    print_array(array, n);
-    return (0);
 }
