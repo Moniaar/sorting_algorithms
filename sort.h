@@ -26,7 +26,11 @@ void print_list(const listint_t *list);
 void bubble_sort(int *array, size_t size);
 void swap_liselm(listint_t *m, listint_t *n);
 void selection_sort(int *array, size_t size);
-void quick_sort(int *array, size_t size);
 void insertion_sort_list(listint_t **list);
-
+size_t swap_elem(int *array, ssize_t low, ssize_t high);
+void quick_sort(int *array, size_t size);
+void partition(int *array, size_t size, ssize_t low, ssize_t high);
+void swap(int *a, int *b);
+size_t get_gap(size_t size);
+void shell_sort(int *array, size_t size);
 #endif
