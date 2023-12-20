@@ -1,96 +1,78 @@
-#include <stdio.h>
 #include "sort.h"
 
-/**
- * swap - a function to swap 2 elements from
- * the array
- *
- * @a: the first element that needs to be swapped
- *
- * @b: the seconed element that needs to be swapped
- *
- * Return: Nothing (void)
- */
-
-void swap(int *a, int *b)
-{
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-}
 
 /**
- * swap_elem - a function to swap 2 elements from
- * the array
- *
- * @array: the input array from the user to be sorted
- *
- * @size: the size of the array to be sorted
- *
- * @low: the lowest element in an array
- *
- * @high: the highest (biggest) element in an array
- *
- * Return: Nothing (void)
+ * lomutoPartition - sorts pivot
+ * @array: The array to sort
+ * @start: The start index
+ * @end: The end index
+ * @size: The array size
+ * Return: The index of the pivot
  */
-
-size_t swap_elem(int *array, ssize_t low, ssize_t high)
+size_t lomutoPartition(int *array, size_t start, size_t end, size_t size)
 {
-	int m, n, piv = array[high];
+	int pivot = array[end], tmp;
+	size_t i = start - 1, j;
 
-	for (m = n = low; n < high; n++)
-		if (array[n] < piv)
-		{
-			swap(&array[n], &array[m]);
-			m++;
-		}
-
-	swap(&array[m], &array[high]);
-
-	return (m);
-}
-
-/**
- * partition - a function to do Lomuto partition for the
- * start of the sorting section
- *
- * @arr: the input array that needs to be sorted
- *
- * @low: the lowest element in the array
- *
- * @size: the size of the entred array
- *
- * @high: the highest element inside the array
- *
- * Return: integer postion of the current pivot
- */
-
-void partition(int *array, size_t size, ssize_t low, ssize_t high)
-{
-	if (low < high)
+	for (j = start; j < end; j++)
 	{
-		size_t p;
-		p = swap_elem(array, low, high);
+		if (array[j] < pivot)
+		{
+			i++;
 
-		partition(array, size, low, p - 1);
-		partition(array, size, p + 1, high);
+			if (i != j)
+			{
+				/* swap */
+				tmp = array[j];
+				array[j] = array[i];
+				array[i] = tmp;
+
+				print_array(array, size);
+			}
+		}
 	}
 
+	i++;
+	if (array[i] > pivot)
+	{
+		/* swap */
+		tmp = array[i];
+		array[i] = array[end];
+		array[end] = tmp;
+
+		print_array(array, size);
+	}
+
+	return (i);
 }
 
 /**
- * quick_sort - a function to implement the algorithm of quicksort
- *
- * @array: the given array element as an input to be sorted
- *
- * @size: the size of the given input array
- *
- * Return: integer postion of the current pivot
+ * quick_sort_rec - sorts an array using the quick sort algorithm
+ * @array: The array to sort
+ * @start: The start index
+ * @end: The end index
+ * @size: The array size
  */
+void quick_sort_rec(int *array, int start, int end, size_t size)
+{
+	size_t idx_part;
 
+	/* base */
+	if (end < start)
+		return;
+
+	idx_part = lomutoPartition(array, start, end, size);
+
+	quick_sort_rec(array, start, idx_part - 1, size);
+	quick_sort_rec(array, idx_part + 1, end, size);
+}
+
+/**
+ * quick_sort - sorts a list using the quick sort algotithm
+ * @array: The array to  sort
+ * @size: The size of the array
+ */
 void quick_sort(int *array, size_t size)
 {
-	if (!array || !size)
-		return;
-	partition(array, size, 0, size - 1);
+	quick_sort_rec(array, 0, size - 1, size);
 }
